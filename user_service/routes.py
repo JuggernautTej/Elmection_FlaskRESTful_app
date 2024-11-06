@@ -7,9 +7,11 @@ import requests
 
 user_bp = Blueprint('users', __name__)
 
+# Helper function 1 to find user
 def find_user(user_id):
     return next((user for user in users if user.id == user_id), None)
 
+# Helper function 2 to validate user
 def validate_user_data(data):
     if not data:
         abort(400, description="Request data is missing.")
