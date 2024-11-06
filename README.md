@@ -1,7 +1,7 @@
 
 ----------
 
-# Microservices Project: Task and User Management
+# Elmection Flask RESTful Microservices Project: Task and User Management
 
 This project consists of two Flask-based microservices:
 
