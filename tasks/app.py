@@ -21,6 +21,19 @@ def get_task(id):
 
 @app.route('/tasks/<id>', methods=['GET'])
 def get_task(id):
+    task = mongo.db.tasks.find_one({'_id': ObjectId(id)})
+    if task:
+        return jsonify({'_id': str(task['_id']), 'title': task['title'], 'description' : task['description'], 'completed': task['completed']})
+    return jsonify({'error': 'Task not found'}), 404
+
+@app.route('/tasks/<id>', methods=['PATCH'])
+def update_task(id):
+    data = request.json
+    update_data = {k: v for k, v in data.items() if k in ['title', 'description', 'completed']}
+    result = mongo.db.tasks.update_one({'_id': ObjectId(id)}, {'$set': update_data})
+    if result.matched_count:
+        return jsonify({'message': 'Task updated'})
+    return jsonify({'error': 'Task not found'}), 404
 
 if __name__ == '__main__':
     app.run(debug=True)
