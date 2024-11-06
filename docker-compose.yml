@@ -9,9 +9,9 @@ services:
     volumes:
       - mongo_data:/data/db
 
-  task_service:
-    build: ./task_service
-    container_name: task_service
+  tasks:
+    build: ./tasks
+    container_name: tasks
     environment:
       - MONGO_URI=mongodb://mongo:27017/tasks_db
     ports:
