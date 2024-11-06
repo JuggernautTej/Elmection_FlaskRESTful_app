@@ -36,4 +36,14 @@ def create_task():
 # PATCH /tasks/<id>: Update a specific task.
 @task_bp.route('/tasks/<int:id>', methods=['PATCH'])
 def update_task(id):
-    return
+    task = find_task(id)
+    if task is None:
+        abort(404, description="Task not found.")
+    data = request.get_json()
+    if 'title' in data:
+        task.title = data['title']
+    if 'description' in data:
+        task.description = data['description']
+    if 'completed' in data:
+        task.completed = data['completed']
+    return jsonify(task.__dict__), 200
