@@ -6,8 +6,25 @@ from .models import Task, tasks
 
 task_bp = Blueprint('tasks', __name__)
 
+# Helper function 1
 def find_task(task_id):
     return next((task for task in tasks if task.id == task_id), None)
+
+# Helper function 2
+def validate_task_data(data, is_update=False):
+    if not data:
+        abort(400, description="Request data is missing")
+    if not is_update:
+        if 'title' not in data or not isinstance(data['title'], str) or not data['title'].strip():
+            abort(400, description="Title is required and must be a non-empty string")
+        if 'description' not in data or not isinstance(data['description'],str):
+            abort(400, description="Description is required and must be a string")
+        if 'title' in data and (not isinstance(data['title'], str) or not data['title'].strip()):
+            abort(400, description="Title must be a non-empty string.")
+        if 'description' in data and not isinstance(data['description'], str):
+            abort(400, description="Description must be a string.")
+        if 'completed' in data and not isinstance(data['completed'], bool):
+            abort(400, description="Completed must be a boolean.")    
 
 # GET /tasks: Retrieve all tasks.
 @task_bp.route('/tasks', methods=['GET'])
@@ -26,8 +43,8 @@ def get_task(id):
 @task_bp.route('/tasks', methods=['POST'])
 def create_task():
     data = request.get_json()
-    if not data or 'title' not in data or 'description' not in data:
-        abort(400, description="Title and description are required fields.")
+    validate_task_data(data)
+
     task_id = len(tasks) + 1
     task = Task(id=task_id, title=data['title'], description=data['description'])
     tasks.append(task)
@@ -40,6 +57,8 @@ def update_task(id):
     if task is None:
         abort(404, description="Task not found.")
     data = request.get_json()
+    validate_task_data(data, is_update=True)
+    
     if 'title' in data:
         task.title = data['title']
     if 'description' in data:
