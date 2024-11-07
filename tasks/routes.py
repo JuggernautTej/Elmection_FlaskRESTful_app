@@ -2,7 +2,7 @@
 """This script defines the endpoints for the RESTful api"""
 
 from flask import Blueprint, jsonify, request, abort
-from .models import Task, tasks
+from models import Task, tasks
 
 task_bp = Blueprint('tasks', __name__)
 

@@ -3,7 +3,7 @@
 
 from flask import Flask, jsonify, request
 from flask_pymongo import PyMongo
-from tasks.routes import task_bp
+from routes import task_bp
 from bson.objectid import ObjectId
 
 app = Flask(__name__)
@@ -14,7 +14,7 @@ app.config["MONGO_URI"] = "mongodb://mongo:27017/tasks_db"
 mongo = PyMongo(app)
 
 @app.route('/tasks', methods=['GET'])
-def get_task(id):
+def get_tasks():
     tasks = mongo.db.tasks.find()
     result = [{'_id': str(task['_id']), 'title': task['title'], 'description': task['description'], 'completed': task['completed']} for task in tasks]
     return jsonify(result)
