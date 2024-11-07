@@ -38,4 +38,4 @@ def get_user_tasks(id):
     return jsonify({'user_id': id, 'tasks': mock_tasks})
 
 if __name__ == '__main__':
-    app.run(port=50001, debug=True)
+    app.run(host="0.0.0.0", port=5001, debug=True)
