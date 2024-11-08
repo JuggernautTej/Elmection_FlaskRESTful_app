@@ -44,7 +44,7 @@ def get_user_tasks(id):
     if user is None:
         abort(404, description="User not found")
     try:
-        response = requests.get('http://127.0.0.1:5000/tasks')
+        response = requests.get('http://tasks:5000/tasks')
         tasks = response.json()
     except requests.RequestException as e:
         return jsonify({"Error": "Couldn't connect to Tasks service"}), 503
